@@ -35,7 +35,7 @@ function frame(title, description, body, route = 'home') {
   <title>${title}</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/site.css">
-  <script src="/assets/site.js" defer></script>
+  ${route === 'home' ? '<script src="/assets/site.js" defer></script>' : ''}
 </head>
 <body class="page-${route}" id="top">
   <a class="skip" href="#main">本文へ移動</a>
@@ -95,8 +95,11 @@ const art = `<svg class="cake-art" viewBox="0 0 480 370" fill="none" aria-hidden
     <circle cx="238" cy="178" r="134" stroke-dasharray="2 5" opacity=".42"/>
     <circle cx="238" cy="178" r="109" opacity=".58"/>
     <path d="M238 178 238 69a109 109 0 1 0 94 164L238 178Z" fill="#eac17d" fill-opacity=".21"/>
-    <path d="m258 165 0-109a109 109 0 0 1 94 164l-94-55Z" fill="#eac17d" fill-opacity=".45"/>
-    <path d="M238 178v20l85 50m29-28v17l-94-55v-17M102 178H46m333 0h53M238 45V16m0 296v41" opacity=".52"/>
+    <g class="cake-art-slice">
+      <path d="m258 165 0-109a109 109 0 0 1 94 164l-94-55Z" fill="#eac17d" fill-opacity=".45"/>
+      <path d="M352 220v17l-94-55v-17" opacity=".52"/>
+    </g>
+    <path d="M238 178v20l85 50M102 178H46m333 0h53M238 45V16m0 296v41" opacity=".52"/>
     <path d="M154 255c21 17 45 26 75 28m-86-39 5 5m154-156c20 10 36 27 46 49" opacity=".63"/>
     <path d="M42 178h8m-4-4v8m382-4h8m-4-4v8M234 16h8m-4-4v8m-4 333h8m-4-4v8"/>
   </g>
@@ -141,7 +144,13 @@ export function homePage() {
       <a class="quick-note" href="#access"><span>${shop.closed}</span>${icon('arrow')}</a>
     </aside>
 
-    <section class="signature" aria-labelledby="signature-heading">
+    <div class="shell chapter">
+      <a href="#signature" class="chapter-link">${icon('down')}<span>看板のチーズケーキ</span></a>
+      <span class="chapter-rule" aria-hidden="true"></span>
+      <button type="button" class="motion-toggle" aria-pressed="false" hidden>スクロール演出<span aria-hidden="true">OFF</span></button>
+    </div>
+
+    <section id="signature" class="signature" aria-labelledby="signature-heading">
       <div class="shell signature-inner">
         <div class="signature-head">
           ${label('01 / THE SIGNATURE')}
@@ -149,6 +158,10 @@ export function homePage() {
           <p>フランス産クリームチーズのコクに、瀬戸内産レモンのさわやかさ。しっとりと焼き上げた生地は、ひと口食べるとすっとほどけます。</p>
         </div>
         <div class="signature-stage">
+          <svg class="signature-orbit" aria-hidden="true" viewBox="0 0 1060 530" preserveAspectRatio="none" fill="none">
+            <path d="M32 342C62 215 230 85 498 66c265-20 498 76 525 193 28 123-177 234-450 242C302 509 10 445 32 342Z" pathLength="1"/>
+            <path d="M998 96v30m-15-15h30M65 418v24m-12-12h24" />
+          </svg>
           <p class="signature-type" aria-hidden="true">Baked with care.</p>
           ${photo('whole', '(max-width: 740px) 92vw, (max-width: 1360px) 69vw, 925px', 'signature-photo')}
           <span class="signature-index" aria-hidden="true">01 — 02</span>
