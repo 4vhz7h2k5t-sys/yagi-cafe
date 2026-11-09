@@ -95,3 +95,63 @@ toggle.addEventListener('click', () => {
 motionPreference.addEventListener('change', syncPreference);
 toggle.hidden = false;
 syncPreference();
+
+// Show the welcome once per tab, with an explicit replay in the footer.
+const welcome = document.querySelector('.opening');
+const replayOpening = document.querySelector('.opening-replay');
+const openingSessionKey = 'yagi-opening-seen';
+let openingEvents;
+let openingTimeout;
+let openingTrigger;
+
+function finishOpening() {
+  if (welcome.hidden) return;
+  const restoreFocus = welcome.contains(document.activeElement);
+  welcome.hidden = true;
+  welcome.classList.remove('is-playing', 'is-dismissed');
+  openingEvents.abort();
+  clearTimeout(openingTimeout);
+  if (restoreFocus) openingTrigger.focus({ preventScroll: true });
+  openingTrigger = null;
+}
+
+function dismissOpening() {
+  if (welcome.hidden || welcome.classList.contains('is-dismissed')) return;
+  welcome.classList.add('is-dismissed');
+  clearTimeout(openingTimeout);
+  openingTimeout = setTimeout(finishOpening, 220);
+}
+
+function playOpening(event) {
+  if (!welcome.hidden) return;
+  openingTrigger = event?.currentTarget || document.querySelector('.hero-actions a');
+  welcome.hidden = false;
+  welcome.classList.add('is-playing');
+  openingEvents = new AbortController();
+  const signal = openingEvents.signal;
+  welcome.addEventListener('animationend', (event) => {
+    if (event.target === welcome) finishOpening();
+  }, { signal });
+  welcome.addEventListener('pointerdown', dismissOpening, { signal });
+  welcome.querySelector('.opening-skip').addEventListener('click', () => {
+    openingTrigger.focus({ preventScroll: true });
+    dismissOpening();
+  }, { signal });
+  window.addEventListener('wheel', dismissOpening, { passive: true, signal });
+  window.addEventListener('touchstart', dismissOpening, { passive: true, signal });
+  window.addEventListener('keydown', dismissOpening, { signal });
+  window.addEventListener('pagehide', finishOpening, { signal });
+  openingTimeout = setTimeout(finishOpening, 2000);
+}
+
+let hasSeenOpening = false;
+try { hasSeenOpening = sessionStorage.getItem(openingSessionKey) === 'yes'; } catch {}
+if (!hasSeenOpening && !motionPreference.matches && !location.hash && window.scrollY < 10) {
+  try { sessionStorage.setItem(openingSessionKey, 'yes'); } catch {}
+  playOpening();
+}
+replayOpening.hidden = false;
+replayOpening.addEventListener('click', playOpening);
+motionPreference.addEventListener('change', () => {
+  if (motionPreference.matches) finishOpening();
+});

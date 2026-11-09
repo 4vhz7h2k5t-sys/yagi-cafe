@@ -21,6 +21,38 @@ const insta = () => ext(shop.instagram, '公式Instagram');
 const bread = (text) => `<nav class="breadcrumbs" aria-label="現在の位置"><a href="/">トップ</a><span aria-hidden="true">/</span><span aria-current="page">${text}</span></nav>`;
 const label = (text) => `<p class="eyebrow" lang="en">${text}</p>`;
 
+const opening = `
+  <div class="opening" hidden>
+    <div class="opening-scene" aria-hidden="true">
+      <svg class="opening-art" viewBox="0 0 260 215" fill="none">
+        <circle class="opening-halo" cx="130" cy="105" r="93" fill="#f8e7b8"/>
+        <ellipse class="opening-shadow" cx="133" cy="164" rx="62" ry="7" fill="#bb8c50" opacity=".16"/>
+        <g class="opening-plate" stroke="#c9ac86" stroke-width="1.2">
+          <ellipse cx="132" cy="162" rx="96" ry="18" fill="#fffaf1"/>
+          <path d="M49 164c30 13 125 13 165-2" opacity=".6"/>
+        </g>
+        <g class="opening-slice" stroke-linejoin="round">
+          <path d="m55 109 154-18q10 21 0 42L55 153Z" fill="#f8dfa1" stroke="#a16d3b" stroke-width="1.6"/>
+          <path d="m55 145 156-19-2 7-154 20Z" fill="#d5a36a"/>
+          <path d="m55 109 95-50q42 5 59 32Z" fill="#d99445" stroke="#a16d3b" stroke-width="1.6"/>
+          <path d="m67 108 84-43q29 5 43 17" stroke="#efb96e" stroke-width="3" stroke-linecap="round"/>
+          <path d="m64 119 132-16" stroke="#fff1cb" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="m78 146 5-1m31-3 5-1m34-3 5-1m27-3 4-1" stroke="#b7834f" stroke-width="1.4" stroke-linecap="round"/>
+        </g>
+        <g class="opening-sparkles" stroke="#aa713c" stroke-width="1.5" stroke-linecap="round">
+          <path d="m40 77 3-8 3 8 8 3-8 3-3 8-3-8-8-3Z" fill="#f5cf79"/>
+          <path d="m210 49 2-6 2 6 6 2-6 2-2 6-2-6-6-2Z" fill="#f5cf79"/>
+          <path d="m223 121 2 3m-37-84 3-2"/>
+          <circle cx="66" cy="49" r="2" fill="#aa713c" stroke="none"/>
+        </g>
+      </svg>
+      <p class="opening-wordmark">YAGI<span>.</span>CAFE</p>
+      <p class="opening-tagline">ひと切れの、しあわせ。</p>
+      <p class="opening-note" lang="en">A LITTLE SLICE OF HAPPINESS</p>
+    </div>
+    <button class="opening-skip" type="button">スキップ ${icon('arrow')}</button>
+  </div>`;
+
 function frame(title, description, body, route = 'home') {
   const menuCurrent = route === 'menu' ? ' aria-current="page"' : '';
   const access = route === 'home' ? '#access' : '/#access';
@@ -38,6 +70,7 @@ function frame(title, description, body, route = 'home') {
   ${route === 'home' ? '<script src="/assets/site.js" defer></script>' : ''}
 </head>
 <body class="page-${route}" id="top">
+  ${route === 'home' ? opening : ''}
   <a class="skip" href="#main">本文へ移動</a>
   <div class="demo-bar"><div class="shell demo-row"><a href="#demo-info">非公式の自主制作デモ</a><span>DESIGN BY RENTA STUDIO</span></div></div>
   <header class="site-header">
@@ -64,7 +97,7 @@ function frame(title, description, body, route = 'home') {
           <p class="footer-sources">店舗情報の参照：<a href="${sources.kure}">くれとりっぷ</a>・<a href="${sources.wink}">Wink</a>・<a href="${sources.tabelog}">食べログ</a></p></div>
         ${ext(shop.correction, '掲載内容の修正・削除のご連絡')}
       </div>
-      <div class="footer-end"><span>© 2026 RENTA STUDIO</span>${link('#top', 'ページ上部へ', 'up')}</div>
+      <div class="footer-end"><span>© 2026 RENTA STUDIO</span>${route === 'home' ? '<button type="button" class="opening-replay" hidden>オープニングをもう一度</button>' : ''}${link('#top', 'ページ上部へ', 'up')}</div>
     </div>
   </footer>
 </body>
