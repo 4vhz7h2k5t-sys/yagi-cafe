@@ -47,8 +47,6 @@ const opening = `
         </g>
       </svg>
       <p class="opening-wordmark">YAGI<span>.</span>CAFE</p>
-      <p class="opening-tagline">ひと切れの、しあわせ。</p>
-      <p class="opening-note" lang="en">A LITTLE SLICE OF HAPPINESS</p>
     </div>
     <button class="opening-skip" type="button">スキップ ${icon('arrow')}</button>
   </div>`;
